@@ -4,7 +4,7 @@
   sources:
     - ansible.eda.url_check:
         urls:
-          - http://<IP_de_target01>
+          - http:192.168.1.183
         delay: 10
   rules:
     - name: Relancer nginx si le site est inaccessible
