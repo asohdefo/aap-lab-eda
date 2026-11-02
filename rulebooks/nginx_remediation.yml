@@ -1,0 +1,19 @@
+---
+- name: Surveiller le site nginx
+  hosts: all
+  sources:
+    - ansible.eda.url_check:
+        urls:
+          - http://<IP_de_target01>
+        delay: 10
+  rules:
+    - name: Relancer nginx si le site est inaccessible
+      condition: event.url_check.status == "down"
+      throttle:
+        once_within: 2 minutes
+        group_by_attributes:
+          - event.url_check.url
+      action:
+        run_job_template:
+          name: restart-nginx
+          organization: Default
