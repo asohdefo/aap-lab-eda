@@ -1,0 +1,19 @@
+---
+- name: Surveiller les incidents ServiceNow
+  hosts: all
+  sources:
+    - servicenow.itsm.records:
+        instance:
+          host: "{{ sn_host }}"
+          username: "{{ sn_user }}"
+          password: "{{ sn_password }}"
+        table: incident
+        sysparm_query: "short_descriptionLIKEnginx^state=1"
+        interval: 30
+        remote_servicenow_timezone: America/Los_Angeles
+  rules:
+    - name: Afficher les incidents nginx nouveaux
+      condition: event.sys_id is defined
+      action:
+        print_event:
+          pretty: true
