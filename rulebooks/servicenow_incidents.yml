@@ -17,3 +17,13 @@
       action:
         print_event:
           pretty: true
+    - name: Réparer nginx pour chaque incident nginx
+      condition: event.sys_id is defined
+      throttle:
+        once_within: 2 minutes
+        group_by_attributes:
+          - event.sys_id
+      action:
+        run_job_template:
+          name: restart-nginx
+          organization: Default  
