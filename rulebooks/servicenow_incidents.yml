@@ -1,6 +1,7 @@
 ---
 - name: Surveiller les incidents ServiceNow
   hosts: all
+  match_multiple_rules: true
   sources:
     - servicenow.itsm.records:
         instance:
