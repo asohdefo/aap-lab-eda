@@ -27,4 +27,11 @@
       action:
         run_job_template:
           name: restart-nginx
-          organization: Default  
+          organization: Default
+          job_args:
+            extra_vars:
+              incident_sys_id: "{{ event.sys_id }}"
+              incident_number: "{{ event.number }}"
+              sn_host: "{{ sn_host }}"
+              sn_user: "{{ sn_user }}"
+              sn_password: "{{ sn_password }}"
