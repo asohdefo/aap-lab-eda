@@ -4,10 +4,6 @@
   match_multiple_rules: true
   sources:
     - servicenow.itsm.records:
-        instance:
-          host: "{{ sn_host }}"
-          username: "{{ sn_user }}"
-          password: "{{ sn_password }}"
         table: incident
         sysparm_query: "short_descriptionLIKEnginx^state=1"
         interval: 30
@@ -32,6 +28,3 @@
             extra_vars:
               incident_sys_id: "{{ event.sys_id }}"
               incident_number: "{{ event.number }}"
-              sn_host: "{{ sn_host }}"
-              sn_user: "{{ sn_user }}"
-              sn_password: "{{ sn_password }}"
