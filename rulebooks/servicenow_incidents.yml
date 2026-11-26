@@ -12,6 +12,7 @@
         remote_servicenow_timezone: America/Los_Angeles
 
   rules:
+
     - name: Afficher les incidents nginx recus
       condition: event.sys_id is defined
       action:
@@ -19,17 +20,7 @@
           pretty: true
 
     - name: Remedier nginx sur le CI de l'incident
-      condition:
-        all:
-          - event.sys_id is defined
-          - event.number is defined
-          - event.cmdb_ci is defined
-          - event.cmdb_ci != ""
-
-      #throttle:
-       # once_within: 2 minutes
-        #group_by_attributes:
-         # - event.sys_id
+      condition: event.sys_id is defined and event.cmdb_ci is defined
 
       action:
         run_job_template:
