@@ -26,10 +26,10 @@
           - event.cmdb_ci is defined
           - event.cmdb_ci != ""
 
-      throttle:
-        once_within: 2 minutes
-        group_by_attributes:
-          - event.sys_id
+      #throttle:
+       # once_within: 2 minutes
+        #group_by_attributes:
+         # - event.sys_id
 
       action:
         run_job_template:
