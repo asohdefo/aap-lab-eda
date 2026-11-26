@@ -6,7 +6,7 @@
   sources:
     - servicenow.itsm.records:
         table: incident
-        sysparm_query: "short_descriptionLIKEnginx^state=1^cmdb_ciISNOTEMPTY"
+        sysparm_query: "short_descriptionLIKEnginx^state=1"
         sysparm_display_value: true
         interval: 30
         remote_servicenow_timezone: America/Los_Angeles
