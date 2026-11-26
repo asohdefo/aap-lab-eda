@@ -1,25 +1,36 @@
 ---
-- name: Surveiller les incidents ServiceNow
+- name: Surveiller et remedier les incidents nginx ServiceNow
   hosts: all
   match_multiple_rules: true
+
   sources:
     - servicenow.itsm.records:
         table: incident
-        sysparm_query: "short_descriptionLIKEnginx^state=1"
+        sysparm_query: "short_descriptionLIKEnginx^state=1^cmdb_ciISNOTEMPTY"
+        sysparm_display_value: true
         interval: 30
         remote_servicenow_timezone: America/Los_Angeles
+
   rules:
-    - name: Afficher les incidents nginx nouveaux
+    - name: Afficher les incidents nginx recus
       condition: event.sys_id is defined
       action:
         print_event:
           pretty: true
-    - name: Réparer nginx pour chaque incident nginx
-      condition: event.sys_id is defined
+
+    - name: Remedier nginx sur le CI de l'incident
+      condition:
+        all:
+          - event.sys_id is defined
+          - event.number is defined
+          - event.cmdb_ci is defined
+          - event.cmdb_ci != ""
+
       throttle:
         once_within: 2 minutes
         group_by_attributes:
           - event.sys_id
+
       action:
         run_job_template:
           name: restart-nginx
@@ -28,3 +39,4 @@
             extra_vars:
               incident_sys_id: "{{ event.sys_id }}"
               incident_number: "{{ event.number }}"
+              cmdb_ci: "{{ event.cmdb_ci }}"
